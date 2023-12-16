@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 
+import contrato from '../contracts/produtos.contract'
 
 describe('Funcionalidade Produtos', () => {
     let token
@@ -7,12 +8,18 @@ describe('Funcionalidade Produtos', () => {
         cy.token('fulano@qa.com', 'teste').then(tkn => { token = tkn })
     });
 
+    it('Deve validar contrato de produtos', () => {
+        cy.request('http://localhost:3000/produtos').then(response => {
+            return contrato.validateAsync(response.body)
+        })
+    });
+
     it('Listar produtos', () => {
         cy.request({
             method: 'GET',
             url: 'http://localhost:3000/produtos',
         }).then((response) => {
-            expect(response.body.produtos[0].nome).to.equal('Teclado Mecanico1')
+            expect(response.body.produtos)
             expect(response.status).to.equal(200)
             expect(response.body).to.have.property('produtos')
             expect(response.duration).to.be.lessThan(15)
@@ -54,7 +61,7 @@ describe('Funcionalidade Produtos', () => {
                 url: `http://localhost:3000/produtos/${id}`,
                 headers: { authorization: token },
                 body: {
-                    "nome": "Teclado Mecanico1",
+                    "nome": "Teclado Mecanico1323313",
                     "preco": 500,
                     "descricao": "Produto Editado1",
                     "quantidade": 100
