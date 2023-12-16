@@ -84,7 +84,7 @@ describe('Funcionalidade Produtos', () => {
                 })
             });
     });
-    it.only('Deve deletar um produto previamente cadastrado', () => {
+    it('Deve deletar um produto previamente cadastrado', () => {
         let produto = `Mouse Gamer ${Math.floor(Math.random() * 10000000)}`
         cy.cadastrarProduto(token, produto, 250, "Descricao do produto novo", 180)
         .then(response => {
